@@ -1,5 +1,7 @@
+from flask import send_from_directory
+
 from yaj import app
-# from flask import render_template
+from yaj.config import YAJ_WEB_PATH
 
 # ---- MAKO templating
 
@@ -13,6 +15,10 @@ def serve_template(templatename, **kwargs):
     return mytemplate.render(**kwargs)
 
 # ---- Routing
+
+@app.route("/bootstrap-native/<path:filename>")
+def bootstrap(filename):
+    return send_from_directory(YAJ_WEB_PATH+"/bootstrap-native", filename)
 
 @app.route("/test")
 def test_page():
