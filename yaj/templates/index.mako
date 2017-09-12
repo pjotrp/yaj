@@ -7,6 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="bootstrap-native/assets/css/bootstrap.min.css">
+    <link href="css/styles.css" rel="stylesheet">
   </head>
   <body>
     <h1>Hello, world!</h1>
