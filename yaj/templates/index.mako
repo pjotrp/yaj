@@ -10,8 +10,21 @@
     <link href="css/styles.css" rel="stylesheet">
   </head>
   <body>
-    <h1>Hello, world!</h1>
-
+  <div class="container">
+    <div class="row">
+    <div class="content">
+         <div class="col-8">
+         <div class="imageContainer">Yet Another Journal</div>
+         </div>
+    </div>
+    </div>
+  </div>
+  <div class="row">
+  <div class="content">
+    <div class="col">Sidebar content
+    </div>
+    <div class="col align-items-center">
+    <p>
 <table class="table table-hover">
   <thead>
     <tr>
@@ -42,6 +55,10 @@
     </tr>
   </tbody>
 </table>
+    </div>
+  </div>
+  </div>
+
 
     <script type="text/javascript" src="bootstrap-native/dist/bootstrap-native-v4.min.js"></script>
   </body>

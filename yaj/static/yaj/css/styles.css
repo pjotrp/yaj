@@ -1,2 +1,11 @@
-a { color: #00ff00 }
-block { background-color: #dddddd }
+body {
+  background-color: #ffcccc; }
+
+.content {
+  background-color: white; }
+
+.imageContainer {
+  height: 200px;
+  font-size: 128px;
+  color: #8b0000;
+  background-image: url("../images/yaj.png"); }

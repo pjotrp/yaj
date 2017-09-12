@@ -24,6 +24,10 @@ def bootstrap(filename):
 def css(filename):
     return send_from_directory(YAJ_DIR+"/static/yaj/css", filename)
 
+@app.route("/images/<path:filename>")
+def images(filename):
+    return send_from_directory(YAJ_DIR+"/static/yaj/images", filename)
+
 @app.route("/test")
 def test_page():
     return "Yet another journal! Well, early days!"
