@@ -9,7 +9,7 @@
     <title>YAG - Yet Another Journal</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="bootstrap-native/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link href="css/styles.css" rel="stylesheet">
   </head>
   <body>
@@ -215,6 +215,6 @@
       </div>
       <!-- /.container -->
     </footer>
-    <script type="text/javascript" src="bootstrap-native/dist/bootstrap-native-v4.min.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>

@@ -16,8 +16,12 @@ def serve_template(templatename, **kwargs):
 
 # ---- Routing
 
-@app.route("/bootstrap-native/<path:filename>")
+@app.route("/bootstrap/<path:filename>")
 def bootstrap(filename):
+    return send_from_directory(YAJ_WEB_DIR+"/bootstrap", filename)
+
+@app.route("/bootstrap-native/<path:filename>")
+def bootstrap_native(filename):
     return send_from_directory(YAJ_WEB_DIR+"/bootstrap-native", filename)
 
 @app.route("/css/<path:filename>")
