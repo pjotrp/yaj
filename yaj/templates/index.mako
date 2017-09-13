@@ -24,7 +24,7 @@
         <!-- Author -->
         <p class="lead">
           by
-          <a href="#">${ post.author.name }</a>
+          <a href="${ author.url }">${ author.name }</a>
         </p>
 
         <hr>

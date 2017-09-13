@@ -3,7 +3,7 @@
         "@type": "BlogPosting",
         "headline": "A new journal for biomedical open data",
         "alternativeHeadline": "A pilot platform for FAIR data and analysis: small steps toward reproducible analysis",
-        "datePublished": "Unknown",
+        "datePublished": "October 1st, 2017",
         "author" : {
             "@type": "Person",
             "@context": "http://json-ld.org/contexts/person.jsonld",
