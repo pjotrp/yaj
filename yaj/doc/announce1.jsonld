@@ -1,0 +1,22 @@
+{
+    "BlogPosting": {
+        "@type": "BlogPosting",
+        "headline": "A new journal for biomedical open data",
+        "alternativeHeadline": "A pilot platform for FAIR data and analysis: small steps toward reproducible analysis",
+        "datePublished": "Unknown",
+        "author" : {
+            "@type": "Person",
+            "@context": "http://json-ld.org/contexts/person.jsonld",
+            "@id": "http://thebird.nl/",
+            "name": "Pjotr Prins",
+            "jobTitle": "Editor in chief",
+            "nationality": "Dutch",
+            "url": "http://thebird.nl/",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Netherlands",
+                "email": "mailto:pjotr.public34@thebird.nl"
+            }
+        }
+    }
+}

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <%!
-   from yaj.publish import story
+   from yaj.publish import story, story_metadata
 %>
 
 <%inherit file="base.mako" />
@@ -12,21 +12,25 @@
       <!-- Post Content Column -->
       <div class="col-lg-8">
 
+        <%
+           meta = story_metadata("announce1")
+           post = meta.BlogPosting
+           author = post.author
+        %>
         <!-- Title -->
-        <h1 class="mt-4">A new journal for biomedical open data</h1>
-        <i>A pilot platform for FAIR data and analysis: small steps
-        toward reproducible analysis</i>
+        <h1 class="mt-4">${ post.headline }</h1>
+        <i>${ post.alternativeHeadline }</i>
 
         <!-- Author -->
         <p class="lead">
           by
-          <a href="#">Pjotr Prins</a>
+          <a href="#">${ post.author.name }</a>
         </p>
 
         <hr>
 
         <!-- Date/Time -->
-        <p>Posted on October 1, 2017 at 12:00 PM</p>
+        <p>Posted on ${ post.datePublished }</p>
 
         <hr>
 
@@ -34,11 +38,6 @@
         <img class="img-fluid rounded" src="images/yaj.png" alt="">
 
         <hr>
-
-        <!-- Post Content -->
-        <p class="lead">
-          Abstract
-        </p>
 
         ${ story("announce1") }
 
