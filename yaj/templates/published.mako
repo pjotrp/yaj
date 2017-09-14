@@ -35,7 +35,9 @@
         <hr>
 
         <!-- Preview Image -->
+        <a href="https://www.wikidata.org/wiki/Q54872" border=0>
         <img class="img-fluid rounded" src="${ post.image }" alt="${ post.headline }">
+        </a>
 
         <hr>
 

@@ -72,7 +72,8 @@ what you want and take the source code and and database and improve on
 it, provided you abide by the relevant software and data licenses.
 
 
-<img src="https://media1.fdncms.com/gambit/imager/u/original/3071612/covs-161206-2.jpg" alt="Drawing" style="width: 99%;"/>
+<a href="https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q25014345&format=json&props=labels&languages=en" border=0>
+<img src="https://media1.fdncms.com/gambit/imager/u/original/3071612/covs-161206-2.jpg" alt="Krazy Kat" style="width: 99%;"/></a>
 
 We
 encourage contributions and research experiments, especially where it
