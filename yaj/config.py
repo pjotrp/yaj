@@ -7,6 +7,7 @@ if YAJ_WEB_DIR == None or not os.path.isdir(YAJ_WEB_DIR):
 
 YAJ_DIR     = os.path.dirname(os.path.realpath(__file__))
 YAJ_CSS_DIR = YAJ_DIR+"/static/yaj/css"
+YAJ_GIT     = os.path.dirname(YAJ_DIR)
 
 print(YAJ_CSS_DIR)
 
