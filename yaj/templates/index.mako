@@ -39,7 +39,7 @@
 
         <hr>
 
-        ${ story("announce1") }
+        ${ story(post.content_uri) }
 
         <hr>
 

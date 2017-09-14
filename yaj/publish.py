@@ -1,6 +1,7 @@
 from yaj.config import YAJ_DIR
 from misaka import Markdown, HtmlRenderer
 import json
+from urllib.parse import urlparse
 
 class Struct(dict):
     def __getattr__(self, name):
@@ -21,10 +22,21 @@ def story_metadata(id):
     # print(meta)
     return meta
 
-def story(id):
+
+
+def story(content_uri):
+    """Return the text referenced by content_uri. If uri can not be
+    resolved it is returned as is. Current allowed scheme is 'git'. The
+    netloc 'yaj-dir' resolves to the local source tree.
+
+    """
+    o = urlparse(content_uri)
+    if o.scheme == 'git' and o.netloc == 'yaj-dir':
+        f = open(YAJ_DIR+'/'+o.path)
+        buf = f.read()
+        f.close
+    else:
+        raise Exception("Can not parse URI "+content_uri)
     rndr = HtmlRenderer()
-    f = open(YAJ_DIR+"/doc/"+id+".md")
-    buf = f.read()
-    f.close
     md = Markdown(rndr)
     return md(buf)
