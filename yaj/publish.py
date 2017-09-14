@@ -1,26 +1,12 @@
-from yaj.config import YAJ_DIR, YAJ_GIT
 from misaka import Markdown, HtmlRenderer
-import json
 from urllib.parse import urlparse
 from pygit2 import Repository
 
-class Struct(dict):
-    def __getattr__(self, name):
-        return self[name]
-
-    def __setattr__(self, name, value):
-        self[name] = value
-
-    def __delattr__(self, name):
-        del self[name]
-
+from yaj.config import YAJ_DIR, YAJ_GIT
+import yaj.kjson
 
 def story_metadata(id):
-    f = open(YAJ_DIR+"/doc/"+id+".jsonld")
-    buf = f.read()
-    f.close
-    meta = json.loads(buf, object_hook=Struct)
-    # print(meta)
+    kjson.loadf(YAJ_DIR+"/doc/"+id+".jsonld")
     return meta
 
 from pygit2 import GIT_SORT_TOPOLOGICAL, GIT_SORT_REVERSE, GIT_SORT_TIME
