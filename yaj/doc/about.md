@@ -1,7 +1,7 @@
 This is a peer-reviewed, open access and free journal that is part of
-a community effort to increase the number of open public biomedical
-resources and help make them findable, accessible, interoperable and
-re-usable or
+a community effort to increase the number of open public biological
+and biomedical resources and help make them findable, accessible,
+interoperable and re-usable or
 [FAIR](https://www.force11.org/group/fairgroup/fairprinciples).  In
 this journal you can publish a short paper with metadata describing
 your data and/or software with little effort and <b>free of
