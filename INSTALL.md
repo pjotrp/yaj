@@ -14,6 +14,6 @@ that we use for development and deployment.
 
 ## Run
 
-Point YAJ_WEB_PATH to JS and CSS assets and run with
+Configure the server in a JSON file and run it as
 
-    env YAJ_WEB_PATH=~/opt/yaj/share/web ./run.py
+    ./run.py ./etc/yaj_config.json

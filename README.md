@@ -24,7 +24,6 @@ FAIR means the data should be
 
 ## Technology and resources
 
-
 ### Git
 
 All versions of papers, review and comments are stored into a public

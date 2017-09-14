@@ -3,11 +3,10 @@ from urllib.parse import urlparse
 from pygit2 import Repository
 
 from yaj.config import YAJ_DIR, YAJ_GIT
-import yaj.kjson
+import yaj.kjson as kjson
 
 def story_metadata(id):
-    kjson.loadf(YAJ_DIR+"/doc/"+id+".jsonld")
-    return meta
+    return kjson.loadf(YAJ_DIR+"/doc/"+id+".jsonld")
 
 from pygit2 import GIT_SORT_TOPOLOGICAL, GIT_SORT_REVERSE, GIT_SORT_TIME
 
