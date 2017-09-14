@@ -15,12 +15,12 @@ if len(sys.argv) == 2:
     CONFIG = kjson.loadf(configfn)
     YAJ_WEB_ASSETS_DIR = uri.resolve_to_path(CONFIG.web_assets_dir)
 
-env_web_assets_dir = os.environ.get('YAJ_WEB_ASSETS_DIR')
+env_web_assets_dir = os.environ.get('WEB_ASSETS_DIR')
 if env_web_assets_dir:
     YAJ_WEB_ASSETS_DIR = env_web_assets_dir
 
 if YAJ_WEB_ASSETS_DIR == None or not os.path.isdir(YAJ_WEB_ASSETS_DIR):
-    raise Exception("No path found for "+YAJ_WEB_ASSETS_DIR+" (set YAJ_WEB_ASSETS_DIR)")
+    raise Exception("No path found for "+YAJ_WEB_ASSETS_DIR+" (set WEB_ASSETS_DIR)")
 
 if not os.path.isdir(YAJ_CSS_DIR):
-    raise "No path found for YAJ+CSS_DIR"+YAJ_CSS_DIR
+    raise "No path found for YAJ_CSS_DIR"+YAJ_CSS_DIR

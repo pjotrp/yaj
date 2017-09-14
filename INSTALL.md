@@ -17,3 +17,7 @@ that we use for development and deployment.
 Configure the server in a JSON file and run it as
 
     ./run.py ./etc/yaj_config.json
+
+certain settings can be overriden, e.g.,
+
+     env WEB_ASSETS_DIR=../web-assets ./run.py ./etc/yaj_config.json
