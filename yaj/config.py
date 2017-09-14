@@ -1,6 +1,13 @@
 import os
 import sys
 import yaj.kjson as kjson
+
+YAJ_DIR     = os.path.dirname(os.path.realpath(__file__))
+YAJ_CSS_DIR = YAJ_DIR+"/static/yaj/css"
+YAJ_GIT     = os.path.dirname(YAJ_DIR)
+
+print(YAJ_GIT)
+
 import yaj.uri as uri
 
 if len(sys.argv) == 2:
@@ -14,12 +21,6 @@ if env_web_assets_dir:
 
 if YAJ_WEB_ASSETS_DIR == None or not os.path.isdir(YAJ_WEB_ASSETS_DIR):
     raise Exception("No path found for "+YAJ_WEB_ASSETS_DIR+" (set YAJ_WEB_ASSETS_DIR)")
-
-YAJ_DIR     = os.path.dirname(os.path.realpath(__file__))
-YAJ_CSS_DIR = YAJ_DIR+"/static/yaj/css"
-YAJ_GIT     = os.path.dirname(YAJ_DIR)
-
-print(YAJ_CSS_DIR)
 
 if not os.path.isdir(YAJ_CSS_DIR):
     raise "No path found for YAJ+CSS_DIR"+YAJ_CSS_DIR
