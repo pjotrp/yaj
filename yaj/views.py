@@ -32,10 +32,10 @@ def css(filename):
 def images(filename):
     return send_from_directory(YAJ_DIR+"/static/yaj/images", filename)
 
-@app.route("/test")
-def test_page():
-    return "Yet another journal! Well, early days!"
-
 @app.route("/")
 def main_page(**kwargs):
-    return serve_template("index.mako", name = "Pjotr")
+    return serve_template("published.mako", publish_id = "announce1", no_comments=True)
+
+@app.route("/about.html")
+def about():
+    return serve_template("published.mako", publish_id = "about", no_comments=True)

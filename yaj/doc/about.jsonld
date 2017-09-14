@@ -1,16 +1,16 @@
 {
     "BlogPosting": {
         "@type": "BlogPosting",
-        "headline": "A new journal for biomedical open data",
-        "alternativeHeadline": "A pilot platform for FAIR data and analysis: small steps toward reproducible analysis",
-        "datePublished": "October 1st, 2017",
+        "headline": "About",
         "image": "images/yaj.png",
-        "content_uri": "git://{{GIT-SOURCE}}/doc/announce1.md",
+        "alternativeHeadline": "",
+        "datePublished": "October 1st, 2017",
+        "content_uri": "git://{{GIT-SOURCE}}/doc/about.md",
         "author" : {
             "@type": "Person",
             "@context": "http://json-ld.org/contexts/person.jsonld",
             "@id": "http://thebird.nl/",
-            "name": "Pjotr Prins",
+            "name": "Editorial board",
             "jobTitle": "Editor in chief",
             "nationality": "Dutch",
             "url": "http://thebird.nl/",

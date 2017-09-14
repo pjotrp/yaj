@@ -13,7 +13,7 @@
       <div class="col-lg-8">
 
         <%
-           meta = story_metadata("announce1")
+           meta = story_metadata(publish_id)
            post = meta.BlogPosting
            author = post.author
         %>
@@ -35,7 +35,7 @@
         <hr>
 
         <!-- Preview Image -->
-        <img class="img-fluid rounded" src="images/yaj.png" alt="">
+        <img class="img-fluid rounded" src="${ post.image }" alt="${ post.headline }">
 
         <hr>
 
@@ -43,6 +43,7 @@
 
         <hr>
 
+        % if not no_comments:
         <!-- Comments Form -->
         <div class="card my-4">
           <h5 class="card-header">Leave a Comment:</h5>
@@ -90,7 +91,7 @@
 
           </div>
         </div>
-
+        % endif
       </div>
 
       <!-- Sidebar Widgets Column -->
