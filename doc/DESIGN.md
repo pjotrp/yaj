@@ -36,3 +36,7 @@ time.
 
 Metadata is stored as JSON-LD in a git repository. Simple updates
 can be done in the repository.
+
+Schema's for defining fields that may be interesting are
+[Project Open Data](https://project-open-data.cio.gov/v1.1/schema/),
+[Bioschemas](http://bioschemas.org/).

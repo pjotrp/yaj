@@ -1,6 +1,7 @@
-This is a peer-reviewed, open access and free journal that has the
-goal of increasing the number of open public biomedical resources and
-help make them findable, accessible, interoperable and re-usable or
+This is a peer-reviewed, open access and free journal that is part of
+a community effort to increase the number of open public biomedical
+resources and help make them findable, accessible, interoperable and
+re-usable or
 [FAIR](https://www.force11.org/group/fairgroup/fairprinciples).  In
 this journal you can publish a short paper with metadata describing
 your data and/or software with little effort and <b>free of
@@ -18,8 +19,9 @@ What type of work do we accept?
 2. Any type of workflow, ideally submitted as a runnable 'document'
 3. Any type of free and open source software
 
-provided the work relates to biology/biomedical research and you are,
-or represent, the owner(s) and/or creator(s).
+or combination thereof, provided the work relates to
+biology/biomedical research and you are, or represent, the owner(s)
+and/or creator(s).
 
 Every publication goes through a
 [public peer review process](review.html) which involves a quick check
@@ -33,13 +35,7 @@ and all software has to be published under a
 [free and open source software license](https://en.wikipedia.org/wiki/Open-source_license). In
 other words everything published here has <b>NO costs, NO paywalls, NO
 restrictive terms and conditions</b>. Publication in journal is
-<b>free of charge</b> (did we already say that?).
-
-Note that this is a work in progress (WIP). We are in the process of
-adding datasets, essentially by adding descriptions and metadata as
-files to [this repository]. You are invited to submit your own. An
-example of a publication can be found [here] with its JSON-LD
-[metadata].
+<b>free of charge</b>.
 
 # Author guidelines
 
@@ -53,3 +49,22 @@ your data. Examples can be found [here]
 4. [Submit](submit.html) the two files.
 5. After that the publication will go online without delay and the
    review process starts.
+
+
+# Community effort and research
+
+Note that this journal is a work in progress (WIP). We are in the
+process of adding datasets and publications, essentially by adding
+descriptions and metadata as files to [this repository]. You are
+invited to submit your own. An example of a publication can be found
+[here] with its JSON-LD [metadata]. The source code that makes this
+journal is fully free and open source software written by working
+bioinformaticians. The journal is hosted through small grants out of
+research budgets. Both software and data are online available and
+anyone can copy and host the journal anywhere. You can do with it what
+you want and take it and improve on it, provided you abide by the
+relevant software and data licenses. We encourage contributions and
+research experiments, especially where it comes to
+[FAIR](https://www.force11.org/group/fairgroup/fairprinciples)
+principles, graph databases, reproducible analysis, and/or improving
+people's academic track records.
