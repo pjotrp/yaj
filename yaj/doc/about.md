@@ -1,13 +1,16 @@
-This is a peer-reviewed, open access and free journal has the goal of
-increasing the number of public biomedical data resources and making
-them findable, accessible, interoperable and re-usable or
-[FAIR](https://www.force11.org/group/fairgroup/fairprinciples). Here
-you can publish a short paper with metadata describing your data and/or
-software <b>free of charge</b>.
+This is a peer-reviewed, open access and free journal that has the
+goal of increasing the number of open public biomedical resources and
+help make them findable, accessible, interoperable and re-usable or
+[FAIR](https://www.force11.org/group/fairgroup/fairprinciples).  In
+this journal you can publish a short paper with metadata describing
+your data and/or software with little effort and <b>free of
+charge</b>.
 
 A stable download URL, a description of the data, and some metadata,
-suffice to create a <b>citeable</b> publication. Next to the data a
-reproducible workflow can be published to analyse the data.
+suffice to create a <b>citeable</b> publication. Next to the data, a
+reproducible workflow can be published to analyse the data. Data and
+analysis can be published independently from research papers in other
+journals increasing the chance you get cited for your work.
 
 Every publication goes through a
 [public peer review process](review.html) which involves a quick check
