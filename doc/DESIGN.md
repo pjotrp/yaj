@@ -40,3 +40,5 @@ can be done in the repository.
 Schema's for defining fields that may be interesting are
 [Project Open Data](https://project-open-data.cio.gov/v1.1/schema/),
 [Bioschemas](http://bioschemas.org/).
+
+Linking API's with [Smart-API](http://smart-api.info/website/)

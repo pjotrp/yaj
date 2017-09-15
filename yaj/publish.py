@@ -1,9 +1,12 @@
 from misaka import Markdown, HtmlRenderer
 from urllib.parse import urlparse
+import logging
 
 import yaj.kjson as kjson
 import yaj.uri as uri
 import yaj.fetch as fetch
+
+logger = logging.getLogger('publish')
 
 def story_metadata(id):
     return kjson.loadf(uri.resolve_to_path("git://{{GIT-SOURCE}}/doc/"+id+".jsonld"))
@@ -13,9 +16,11 @@ def story(content_uri):
     resolved it is returned as is. Current allowed scheme is 'git'. The
     netloc 'yaj-dir' resolves to the local source tree.
 
+    The buffer get processed by mako and rendered as markdown.
     """
     fullpath = uri.resolve_to_path(content_uri)
-    buf = fetch.read(fullpath)
+    buf0 = fetch.read(fullpath)
+    # markdown
     rndr = HtmlRenderer()
     md = Markdown(rndr)
-    return md(buf)
+    return md(buf0)
