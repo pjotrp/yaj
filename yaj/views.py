@@ -60,5 +60,4 @@ def main_page(**kwargs):
 
 @app.route("/about.html")
 def about():
-    raise Exception("TEST")
     return serve_template("published.mako", publish_id = "about", no_comments=True)
