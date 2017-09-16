@@ -38,6 +38,10 @@ def handle_bad_request(e):
 
 # ---- Routing
 
+@app.route("/jquery/<path:filename>") # bootstrap CSS and JS
+def jquery(filename):
+    return send_from_directory(YAJ_WEB_ASSETS_DIR+"/jquery", filename)
+
 @app.route("/bootstrap/<path:filename>") # bootstrap CSS and JS
 def bootstrap(filename):
     return send_from_directory(YAJ_WEB_ASSETS_DIR+"/bootstrap", filename)
