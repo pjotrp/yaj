@@ -60,8 +60,8 @@ def images(filename):
 
 @app.route("/")
 def main_page(**kwargs):
-    return serve_template("published.mako", publish_id = "announce1", no_comments=True)
+    return serve_template("published.mako", menu = {"Home": "active"}, publish_id = "announce1", no_comments=True)
 
 @app.route("/about.html")
 def about():
-    return serve_template("published.mako", publish_id = "about", no_comments=True)
+    return serve_template("published.mako", menu = {"About": "active"}, publish_id = "about", no_comments=True)

@@ -24,27 +24,27 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            <li class="${'nav-item active' if publish_id == 'announce1' else 'nav-item'}">
+            <li class="nav-item ${menu.get('Home')}">
               <a class="nav-link" href="/">Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item ${menu.get('Publications')}">
               <a class="nav-link" href="publications.html">Publications</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item ${menu.get('Submit')}">
               <a class="nav-link" href="submit.html">Submit</a>
             </li>
-            <li class="${'nav-item active' if publish_id == 'about' else 'nav-item'}">
+            <li class="nav-item ${menu.get('About')}">
               <a class="nav-link" href="about.html">About</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item ${menu.get('Source')}">
               <a class="nav-link" href="https://github.com/pjotrp/yaj">Source</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item ${menu.get('Contact')}">
               <a class="nav-link" href="contact.html">Contact</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item ${menu.get('Login')}">
               <a class="nav-link" href="login.html">Login</a>
             </li>
           </ul>
