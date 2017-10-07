@@ -68,5 +68,9 @@ def about():
 
 @app.route("/issues.html")
 def issues():
-    issues = [ "issue 1", "issue 2" ]
+    issues = [ { "tag": "issue 1", "url": "issue.html?id=1" } ]
     return serve_template("list.mako", menu = {"Issues": "active"}, name = "Issue tracker", show_list = issues )
+
+@app.route("/issue.html")
+def issue():
+    return serve_template("published.mako", menu = {"Issues": "active"}, publish_id = "about", no_comments=True)

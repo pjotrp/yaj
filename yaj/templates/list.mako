@@ -16,8 +16,7 @@
         <h1 class="mt-4">${ name }</h1>
 
         <div class="list-group">
-          <a href="#" class="list-group-item list-group-item-action">${show_list[0]}</a>
-          <a href="#" class="list-group-item list-group-item-action">${show_list[1]}</a>
+          <a href="${show_list[0]['url']}" class="list-group-item list-group-item-action">${show_list[0]["tag"]}</a>
         </div>
 
       </div>
