@@ -8,9 +8,9 @@
 
 Every publication comes as a text file in a supported format (e.g.,
 Markdown) accompanied by a metadata file in JSON-LD format. These
-publications with metadata are stored in a git repository. Some will
-be in the source tree (like the 'about' page), but others may sit
-anywhere.
+publications with metadata are stored in a git repository or
+IPFS. Some will be in the source tree (like the 'about' page), but
+others may sit anywhere on IPFS.
 
 Metadata is 'named' and stored in directories which act as initial
 sections. Information gets cached in a database. The database gets

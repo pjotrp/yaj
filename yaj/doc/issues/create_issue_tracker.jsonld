@@ -1,0 +1,23 @@
+{
+    "BlogPosting": {
+        "@type": "BlogPosting",
+        "headline": "Create Issue Tracker",
+        "alternativeHeadline": "",
+        "datePublished": "October 7th, 2017",
+        "content_uri": "git://{{GIT-SOURCE}}/doc/issues/create_issue_tracker.md",
+        "author" : {
+            "@type": "Person",
+            "@context": "http://json-ld.org/contexts/person.jsonld",
+            "@id": "http://thebird.nl/",
+            "name": "Editorial board",
+            "jobTitle": "Editor in chief",
+            "nationality": "Dutch",
+            "url": "http://thebird.nl/",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Netherlands",
+                "email": "mailto:pjotr.public34@thebird.nl"
+            }
+        }
+    }
+}
