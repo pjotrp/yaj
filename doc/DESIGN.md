@@ -42,3 +42,11 @@ Schema's for defining fields that may be interesting are
 [Bioschemas](http://bioschemas.org/).
 
 Linking API's with [Smart-API](http://smart-api.info/website/)
+
+## Links
+
+1. https://steemit.com/
+2. wikidata
+3. hyper ledger
+4. [health care records](https://www.cio.com/article/3171132/innovation/an-ipfs-addressable-storage-model-for-healthcare-with-blockchain.html)
+5. http://chriswarbo.net/blog/2017-03-20-web_hosting_with_ipfs_and_nix.html

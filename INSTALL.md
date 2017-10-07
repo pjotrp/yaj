@@ -36,7 +36,10 @@ Using a recent Guix checkout the tree from https://gitlab.com/genenetwork/guix-b
 
     env GUIX_PACKAGE_PATH=./guix-bioinformatics guix package -p ~/opt/yaj -i yaj
 
-this should get you all required dependencies. Load the profile with
+this should get you all required dependencies. In ~/opt/yaj/share/web
+you should find the web assets, including bootstrap.
+
+In a terminal load the profile settings with
 
     . ~/opt/yaj/etc/profile
 
@@ -44,7 +47,7 @@ so you can see the paths with
 
     set|grep gnu
 
-Now checkout the journal source code from https://github.com/pjotrp/yaj. You should be able to run the server with the following
+Now checkout the journal source code from https://github.com/pjotrp/yaj. You should be able to run the server with the following:
 
 ## Run the webserver
 
@@ -52,6 +55,6 @@ Configure the server in a JSON file and run it as
 
     ./run.py ./etc/yaj_config.json
 
-certain settings can be overriden, e.g.,
+optionally, certain settings can be overriden, e.g.,
 
      env WEB_ASSETS_DIR=../web-assets ./run.py ./etc/yaj_config.json
