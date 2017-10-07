@@ -41,6 +41,9 @@
             <li class="nav-item ${menu.get('Source')}">
               <a class="nav-link" href="https://github.com/pjotrp/yaj">Source</a>
             </li>
+            <li class="nav-item ${menu.get('Issues')}">
+              <a class="nav-link" href="issues.html">Issues</a>
+            </li>
             <li class="nav-item ${menu.get('Contact')}">
               <a class="nav-link" href="contact.html">Contact</a>
             </li>

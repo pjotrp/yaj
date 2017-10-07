@@ -99,9 +99,12 @@
 
         <!-- Side Widget -->
         <div class="card my-4">
-          <h5 class="card-header">News</h5>
+          <h5 class="card-header">Work in progress (WIP)</h5>
           <div class="card-body">
-            Keep an eye on this page!
+            <ul>
+              <li> <a class="nav-link" href="issues.html">Issue
+tracker</a></li>
+            </ul>
           </div>
         </div>
       </div>

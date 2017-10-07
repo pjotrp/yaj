@@ -65,3 +65,8 @@ def main_page(**kwargs):
 @app.route("/about.html")
 def about():
     return serve_template("published.mako", menu = {"About": "active"}, publish_id = "about", no_comments=True)
+
+@app.route("/issues.html")
+def issues():
+    issues = [ "issue 1", "issue 2" ]
+    return serve_template("list.mako", menu = {"Issues": "active"}, name = "Issue tracker", show_list = issues )
