@@ -24,7 +24,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
+            <li class="${'nav-item active' if publish_id == 'announce1' else 'nav-item'}">
               <a class="nav-link" href="/">Home
                 <span class="sr-only">(current)</span>
               </a>
@@ -35,7 +35,7 @@
             <li class="nav-item">
               <a class="nav-link" href="submit.html">Submit</a>
             </li>
-            <li class="nav-item">
+            <li class="${'nav-item active' if publish_id == 'about' else 'nav-item'}">
               <a class="nav-link" href="about.html">About</a>
             </li>
             <li class="nav-item">
