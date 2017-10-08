@@ -66,11 +66,11 @@ def main_page(**kwargs):
 def about():
     return serve_template("published.mako", menu = {"About": "active"}, publish_id = "about", no_comments=True)
 
-@app.route("/issues.html")
+@app.route("/issues/")
 def issues():
-    issues = [ { "tag": "issue 1", "url": "issue.html?id=1" } ]
+    issues = [ { "tag": "issue 1", "url": "/issue/1" } ]
     return serve_template("list.mako", menu = {"Issues": "active"}, name = "Issue tracker", show_list = issues )
 
-@app.route("/issue.html")
-def issue():
-    return serve_template("published.mako", menu = {"Issues": "active"}, publish_id = "about", no_comments=True)
+@app.route("/issue/<path:issue_num>")
+def issue(issue_num):
+    return serve_template("issue.mako", menu = {"Issues": "active"}, issue_id = issue_num)

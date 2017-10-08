@@ -13,8 +13,10 @@ def resolve_to_path(uri):
     print(o)
     path = o.path
     if o.scheme == 'git' and o.netloc == '{{GIT-SOURCE}}':
+        # convert git resource to local source path
         path = YAJ_DIR+'/'+o.path
     if o.netloc == '{{HOME}}':
+        # convert file resource to $HOME
         path = os.environ.get('HOME')+path
     if not os.path.exists(path):
         logger.warning("Path "+path+" does not exist")

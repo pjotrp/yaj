@@ -9,6 +9,7 @@ import yaj.fetch as fetch
 logger = logging.getLogger('publish')
 
 def story_metadata(id):
+    # Load metadata from jsonld file
     return kjson.loadf(uri.resolve_to_path("git://{{GIT-SOURCE}}/doc/"+id+".jsonld"))
 
 def story(content_uri):

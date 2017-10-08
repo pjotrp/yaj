@@ -1,3 +1,9 @@
+<!-- Shared base template loads bootstrap and creates header and footer -->
+
+<%!
+  from flask import url_for
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,9 +15,8 @@
     <meta name="author" content="Pjotr Prins">
     <title>YAG - Yet Another Journal</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link href="css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="${url_for('bootstrap', filename='css/bootstrap.min.css')}">
+    <link rel="stylesheet" href="${url_for('css', filename='styles.css')}">
   </head>
 
   <body>
@@ -42,7 +47,7 @@
               <a class="nav-link" href="https://github.com/pjotrp/yaj">Source</a>
             </li>
             <li class="nav-item ${menu.get('Issues')}">
-              <a class="nav-link" href="issues.html">Issues</a>
+              <a class="nav-link" href="issues/">Issues</a>
             </li>
             <li class="nav-item ${menu.get('Contact')}">
               <a class="nav-link" href="contact.html">Contact</a>
@@ -64,7 +69,7 @@
       </div>
       <!-- /.container -->
     </footer>
-    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="jquery/jquery.slim.min.js"></script>
+    <link rel="stylesheet" href="${url_for('bootstrap', filename='js/bootstrap.min.js')}">
+    <script type="text/javascript" src="${url_for('jquery', filename='jquery.slim.min.js')}"></script>
   </body>
 </html>
