@@ -73,4 +73,7 @@ def issues():
 
 @app.route("/issue/<path:issue_num>")
 def issue(issue_num):
-    return serve_template("issue.mako", menu = {"Issues": "active"}, issue_id = issue_num)
+    issues = [ "create_issue_tracker" ]
+    return serve_template("issue.mako",
+                          menu = {"Issues": "active"},
+                          issue_id = "issues/" + issues[int(issue_num)-1])
