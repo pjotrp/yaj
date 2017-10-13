@@ -102,7 +102,7 @@
           <h5 class="card-header">Work in progress (WIP)</h5>
           <div class="card-body">
             <ul>
-              <li> <a class="nav-link" href="issues.html">Issue
+              <li> <a class="nav-link" href="/issues/">Issue
 tracker</a></li>
             </ul>
           </div>
