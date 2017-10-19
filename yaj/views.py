@@ -61,8 +61,11 @@ def get_issue_comments(issue):
             doc_type = issue,
             body = { "query": { "match_all": {} }
                      , "sort": { "posted_on": { "order": "asc" }}
+                     , "size": 10000
             })
-        comments = list(map(lambda c: convertCommentDate(c["_source"]), response["hits"]["hits"]))
+        comments = sorted(
+            list(map(lambda c: convertCommentDate(c["_source"]), response["hits"]["hits"])),
+            key = lambda x: x["posted_on"])
     except TransportError as te:
         comments = []
     return comments
