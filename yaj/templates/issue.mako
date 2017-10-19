@@ -13,7 +13,7 @@
       <div class="col-lg-8">
 
         <%
-           meta = story_metadata(issue_id)
+           meta = story_metadata("issues/" +issue_id)
            post = meta.BlogPosting
            author = post.author
         %>
@@ -39,17 +39,19 @@
         <hr>
 
         <!-- Comments Form -->
+	<form method="POST" action="/add_comment/${issue_id}">
         <div class="card my-4">
           <h5 class="card-header">Leave a Comment:</h5>
           <div class="card-body">
             <form>
               <div class="form-group">
-                <textarea class="form-control" rows="3"></textarea>
+                <textarea name="comment" class="form-control" rows="3"></textarea>
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           </div>
         </div>
+	</form>
 
         <!-- Single Comment -->
 	% for comment in comments:
