@@ -7,6 +7,8 @@ import logging
 from yaj import app
 from yaj.config import YAJ_WEB_ASSETS_DIR, YAJ_DIR
 
+from elasticsearch import Elasticsearch
+
 logger = logging.getLogger('publish')
 
 # ---- MAKO templating
@@ -35,6 +37,24 @@ def handle_bad_request(e):
     formatted_lines = [request.url + " ("+time_str+")"]+traceback.format_exc().splitlines()
     # resp = make_response(render_template("error.html",message=err_msg,stack=formatted_lines,error_image=animation,version=GN_VERSION))
     return serve_template("error.mako",message=err_msg,stack=formatted_lines)
+
+# ---- Comments from Elasticsearch
+def get_issue_comments(issue):
+    es = Elasticsearch([{"host": "localhost", "port": 9200}])
+    response = es.search(
+        index = "comments",
+        doc_type = issue,
+        body = { "query": { "match_all": {} }
+                 , "sort": { "posted_on": { "order": "asc" }}
+        })
+    comments = list(map(lambda c: convertCommentDate(c["_source"]), response["hits"]["hits"]))
+    return comments
+
+def convertCommentDate(comment):
+    new_comment = comment
+    timestamp = comment["posted_on"];
+    new_comment["posted_on"] = datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
+    return new_comment
 
 # ---- Routing
 
@@ -74,6 +94,8 @@ def issues():
 @app.route("/issue/<path:issue_num>")
 def issue(issue_num):
     issues = [ "create_issue_tracker" ]
+    comments = get_issue_comments(issues[int(issue_num)-1])
     return serve_template("issue.mako",
                           menu = {"Issues": "active"},
-                          issue_id = "issues/" + issues[int(issue_num)-1])
+                          issue_id = "issues/" + issues[int(issue_num)-1],
+                          comments = comments)
