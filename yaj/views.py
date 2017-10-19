@@ -38,6 +38,19 @@ def handle_bad_request(e):
     # resp = make_response(render_template("error.html",message=err_msg,stack=formatted_lines,error_image=animation,version=GN_VERSION))
     return serve_template("error.mako",message=err_msg,stack=formatted_lines)
 
+# ---- Issues from filesystem
+def get_issues():
+    from os import listdir
+    from os.path import isfile, join
+    issues_dir = YAJ_DIR + "/doc/issues/"
+    files = [f for f in listdir(issues_dir) if isfile(join(issues_dir, f)) and f.endswith(".jsonld")]
+    return map(get_issues_tags_and_urls, files)
+
+def get_issues_tags_and_urls(filename):
+    name = filename[:-7]
+    tag = " ".join(str(x) for  x in map(lambda s: s.strip().title(), name.split("_")))
+    return { "tag": tag, "url": "/issue/"+name }
+
 # ---- Comments from Elasticsearch
 def get_issue_comments(issue):
     es = Elasticsearch([{"host": "localhost", "port": 9200}])
@@ -88,14 +101,13 @@ def about():
 
 @app.route("/issues/")
 def issues():
-    issues = [ { "tag": "issue 1", "url": "/issue/1" } ]
+    issues = get_issues()
     return serve_template("list.mako", menu = {"Issues": "active"}, name = "Issue tracker", show_list = issues )
 
-@app.route("/issue/<path:issue_num>")
-def issue(issue_num):
-    issues = [ "create_issue_tracker" ]
-    comments = get_issue_comments(issues[int(issue_num)-1])
+@app.route("/issue/<path:issue>")
+def issue(issue):
+    comments = get_issue_comments(issue)
     return serve_template("issue.mako",
                           menu = {"Issues": "active"},
-                          issue_id = "issues/" + issues[int(issue_num)-1],
+                          issue_id = "issues/" + issue,
                           comments = comments)
