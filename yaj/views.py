@@ -7,7 +7,7 @@ import logging
 from yaj import app
 from yaj.config import YAJ_WEB_ASSETS_DIR, YAJ_DIR
 
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, TransportError
 
 logger = logging.getLogger('publish')
 
@@ -54,13 +54,17 @@ def get_issues_tags_and_urls(filename):
 # ---- Comments from Elasticsearch
 def get_issue_comments(issue):
     es = Elasticsearch([{"host": "localhost", "port": 9200}])
-    response = es.search(
-        index = "comments",
-        doc_type = issue,
-        body = { "query": { "match_all": {} }
-                 , "sort": { "posted_on": { "order": "asc" }}
-        })
-    comments = list(map(lambda c: convertCommentDate(c["_source"]), response["hits"]["hits"]))
+    comments = []
+    try:
+        response = es.search(
+            index = "comments",
+            doc_type = issue,
+            body = { "query": { "match_all": {} }
+                     , "sort": { "posted_on": { "order": "asc" }}
+            })
+        comments = list(map(lambda c: convertCommentDate(c["_source"]), response["hits"]["hits"]))
+    except TransportError as te:
+        comments = []
     return comments
 
 def convertCommentDate(comment):
