@@ -1,4 +1,4 @@
-from flask import send_from_directory, request, make_response
+from flask import send_from_directory, request, make_response, redirect, url_for
 import sys
 import traceback
 import datetime
@@ -51,7 +51,7 @@ def get_issues_tags_and_urls(filename):
     tag = " ".join(str(x) for  x in map(lambda s: s.strip().title(), name.split("_")))
     return { "tag": tag, "url": "/issue/"+name }
 
-# ---- Comments from Elasticsearch
+# ---- Comments from and to Elasticsearch
 def get_issue_comments(issue):
     es = Elasticsearch([{"host": "localhost", "port": 9200}])
     comments = []
@@ -72,6 +72,26 @@ def convertCommentDate(comment):
     timestamp = comment["posted_on"];
     new_comment["posted_on"] = datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
     return new_comment
+
+def get_author():
+    return {
+        "@type": "Person",
+        "@context": "http://json-ld.org/contexts/person.jsonld",
+        "@id": "http://example.com/",
+        "name": "Not Set",
+        "jobTitle": "A Job Title",
+        "nationality": "East Timor",
+        "url": "http://domain.tld/",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Guatemala",
+            "email": "roxannemiles@plasto.com"
+        }
+    }
+
+def save_comment(index, doc_type, comment, comment_id):
+    es = Elasticsearch([{"host": "localhost", "port": 9200}])
+    es.create(index=index, doc_type=doc_type, body=comment, id=comment_id);
 
 # ---- Routing
 
@@ -113,5 +133,23 @@ def issue(issue):
     comments = get_issue_comments(issue)
     return serve_template("issue.mako",
                           menu = {"Issues": "active"},
-                          issue_id = "issues/" + issue,
+                          issue_id = issue,
                           comments = comments)
+
+@app.route("/add_comment/<path:issue>", methods=["POST"])
+def add_comment(issue):
+    from time import time, sleep
+    from uuid import uuid4
+    comment_text = request.form["comment"]
+    if not (comment_text is None or comment_text == ""):
+        comment_id = str(uuid4())
+        comment = {
+            "issue_id": issue,
+            "comment_id": comment_id,
+            "comment_text": comment_text,
+            "posted_on": time(),
+            "author": get_author()
+        }
+        save_comment("comments", issue, comment, comment_id)
+        sleep(1) # wait a second to allow document to be indexed
+    return redirect(url_for("issue", issue=issue))
