@@ -16,7 +16,9 @@
         <h1 class="mt-4">${ name }</h1>
 
         <div class="list-group">
-          <a href="${show_list[0]['url']}" class="list-group-item list-group-item-action">${show_list[0]["tag"]}</a>
+	  % for issue in show_list:
+          <a href="${issue['url']}" class="list-group-item list-group-item-action">${issue["tag"]}</a>
+	  % endfor
         </div>
 
       </div>
