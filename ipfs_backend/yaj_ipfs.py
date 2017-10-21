@@ -1,7 +1,5 @@
-from flask import Flask, jsonify, request
-from datetime import datetime
+from flask import Flask, request
 import ipfsapi
-import datetime
 
 app = Flask(__name__)
 api = ipfsapi.connect('127.0.0.1', 5001)
@@ -39,7 +37,7 @@ def get(obj_hash):
         print(result)
         return "Get request processed: {0}".format(result)
 
-### Requires generating keys using key_gen(). UNTESTED
+### Requires generating key: ipfs key gen --type=rsa --size=2048 test-key
 
 """
 Receives a name (either a local IPFS hash or a IPNS path) and resolve it to
@@ -58,7 +56,8 @@ Returns a dict with the IPNS hash and the IPFS path pointing to it
 @app.route("/store/publish/<obj_path>",methods=['POST'])
 def publish(obj_path):
     if request.method == 'POST':
-        result = api.name_publish(obj_path)
+        print(obj_path)
+        result = api.name_publish(obj_path,key="test-key")
         return "Publish request processed: {0}".format(result)
 
 
