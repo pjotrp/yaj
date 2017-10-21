@@ -71,5 +71,8 @@
     </footer>
     <link rel="stylesheet" href="${url_for('bootstrap', filename='js/bootstrap.min.js')}">
     <script type="text/javascript" src="${url_for('jquery', filename='jquery.slim.min.js')}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script type="text/javascript" src="${url_for('js', filename='comments.js')}"></script>
   </body>
 </html>
