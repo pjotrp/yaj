@@ -17,7 +17,7 @@ def put(obj):
 
 
 """
-Lists object by IPFS hash, returns a dict
+Lists hashes linked to an object hash, returns a dict
 """
 @app.route("/store/list/<obj_hash>",methods=['GET'])
 def list(obj_hash):
@@ -35,8 +35,6 @@ def get(obj_hash):
     if request.method == 'GET':
         result = api.get(obj_hash)
         return "Get request processed: {0}".format(result)
-
-### Requires generating key: ipfs key gen --type=rsa --size=2048 test-key
 
 """
 Receives a name (either a local IPFS hash or a IPNS path) and resolve it to
@@ -56,7 +54,7 @@ Returns a dict with the IPNS hash and the IPFS path pointing to it
 def publish(obj_path):
     if request.method == 'POST':
         print(obj_path)
-        result = api.name_publish(obj_path,key="test-key")
+        result = api.name_publish(obj_path)
         return "Publish request processed: {0}".format(result)
 
 
