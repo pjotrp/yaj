@@ -96,6 +96,12 @@ def save_comment(index, doc_type, comment, comment_id):
     es = Elasticsearch([{"host": "localhost", "port": 9200}])
     es.create(index=index, doc_type=doc_type, body=comment, id=comment_id);
 
+def convertMarkdownToHTML(comment):
+    from markdown import markdown
+    new_comment = comment
+    new_comment["comment_text"] = markdown(comment["comment_text"])
+    return new_comment
+
 # ---- Routing
 
 @app.route("/jquery/<path:filename>") # bootstrap CSS and JS
@@ -137,7 +143,7 @@ def issues():
 
 @app.route("/issue/<path:issue>")
 def issue(issue):
-    comments = get_issue_comments(issue)
+    comments = list(map(convertMarkdownToHTML, get_issue_comments(issue)))
     return serve_template("issue.mako",
                           menu = {"Issues": "active"},
                           issue_id = issue,
