@@ -1,0 +1,5 @@
+itsdangerous==0.24
+six==1.10.0
+Jinja2==2.9.6
+urllib3==1.22
+ipfsapi==0.4.2.post1
