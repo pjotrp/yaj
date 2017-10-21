@@ -34,7 +34,6 @@ Accepts an object IPFS hash and download a local copy of that object
 def get(obj_hash):
     if request.method == 'GET':
         result = api.get(obj_hash)
-        print(result)
         return "Get request processed: {0}".format(result)
 
 ### Requires generating key: ipfs key gen --type=rsa --size=2048 test-key
