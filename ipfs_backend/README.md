@@ -4,6 +4,14 @@ IPFS Backend
 
 Experimental backend with [IPFS](https://ipfs.io) using the official [IPFS Python API](https://github.com/ipfs/py-ipfs-api)
 
+First you need to install IPFS: https://dist.ipfs.io/#go-ipfs
+
+Then start the IPFS deamon:
+
+```
+ipfs daemon
+```
+
 
 To test
 -------
