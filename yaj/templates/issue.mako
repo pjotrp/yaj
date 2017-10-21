@@ -45,7 +45,7 @@
           <div class="card-body">
             <form>
               <div class="form-group">
-                <textarea name="comment" class="form-control" rows="3"></textarea>
+                <textarea id="comment-edit" name="comment" class="form-control" rows="3"></textarea>
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
