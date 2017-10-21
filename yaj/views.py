@@ -118,6 +118,10 @@ def css(filename):
 def images(filename):
     return send_from_directory(YAJ_DIR+"/static/yaj/images", filename)
 
+@app.route("/js/<path:filename>")
+def js(filename):
+    return send_from_directory(YAJ_DIR+"/static/yaj/js", filename)
+
 @app.route("/")
 def main_page(**kwargs):
     return serve_template("published.mako", menu = {"Home": "active"}, publish_id = "announce1", no_comments=True)
