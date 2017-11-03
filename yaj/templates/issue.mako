@@ -39,6 +39,7 @@
         <hr>
 
         <!-- Comments Form -->
+	% if user:
 	<form method="POST" action="/add_comment/${issue_id}">
         <div class="card my-4">
           <h5 class="card-header">Leave a Comment:</h5>
@@ -52,6 +53,15 @@
           </div>
         </div>
 	</form>
+	% else:
+	<div class="media mb-4">
+	  <div class="media-body">
+	    <h5 class="mt-0">
+	      <a href="/login?return_to=${return_to}">Login to comment</a>
+	    </h5>
+	  </div>
+	</div>
+	% endif
 
         <!-- Single Comment -->
 	% for comment in comments:
