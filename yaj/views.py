@@ -5,7 +5,8 @@ import datetime
 import logging
 
 from yaj import app
-from yaj.config import YAJ_WEB_ASSETS_DIR, YAJ_DIR
+from yaj.config import YAJ_WEB_ASSETS_DIR, YAJ_DIR, YAJ_SECRET_KEY
+from flask import session
 
 from elasticsearch import Elasticsearch, TransportError
 
@@ -16,6 +17,8 @@ logger = logging.getLogger('publish')
 from mako.template import Template
 from mako.lookup import TemplateLookup
 
+if app.secret_key == None:
+    app.secret_key = YAJ_SECRET_KEY
 mylookup = TemplateLookup(directories=['yaj/templates'], module_directory='/tmp/mako_modules')
 
 def serve_template(templatename, **kwargs):
@@ -145,7 +148,7 @@ def issues():
 def issue(issue):
     import flask
     comments = list(map(convertMarkdownToHTML, get_issue_comments(issue)))
-    user = flask.g.get("user") # Doesn't work. Use sessions
+    user = session.get("user")
     return serve_template(
         "issue.mako"
         , menu = {"Issues": "active"}
@@ -209,7 +212,7 @@ def login_github_user(access_token):
     parameters = { "access_token": access_token}
     result = requests.get(url, params=parameters)
     result_json = result.json()
-    flask.g.user = { # Doesn't work. Use sessions
+    session["user"] = {
         "login-type": "github-oauth"
         , "user-data": result_json
         , "access_token": access_token
