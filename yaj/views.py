@@ -166,3 +166,41 @@ def add_comment(issue):
         save_comment("comments", issue, comment, comment_id)
         sleep(1) # wait a second to allow document to be indexed
     return redirect(url_for("issue", issue=issue))
+
+@app.route("/login")
+def login():
+    from yaj.config import GITHUB_CLIENT_ID
+    return serve_template(
+        "login.mako",
+        menu = {"Login": "active"},
+        client_id = GITHUB_CLIENT_ID)
+
+@app.route("/github_auth", methods=["POST", "GET"])
+def github_auth():
+    from yaj.config import GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
+    import requests;
+    code = request.args.get("code")
+    data = {
+        "client_id": GITHUB_CLIENT_ID
+        , "client_secret": GITHUB_CLIENT_SECRET
+        , "code": code
+        # , "redirect_uri": "The URL in your application where users are sent after authorization"
+        # , "state": "The unguessable random string you provided in Step 1"
+    }
+    result = requests.post("https://github.com/login/oauth/access_token", json=data)
+    result_dict = {arr[0]:arr[1] for arr in [tok.split("=") for tok in [token for token in result.text.split("&")]]}
+    return redirect(url_for("login_github_user", access_token=result_dict["access_token"]))
+
+@app.route("/login_github_user/<access_token>")
+def login_github_user(access_token):
+    import requests, flask
+    url = "https://api.github.com/user"
+    parameters = { "access_token": access_token}
+    result = requests.get(url, params=parameters)
+    result_json = result.json()
+    flask.g.user = {
+        "login-type": "github-oauth"
+        , "user-data": result_json
+        , "access_token": access_token
+    }
+    return redirect("/")
