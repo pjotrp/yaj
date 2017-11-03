@@ -40,3 +40,11 @@ elif CONFIG.get("github_client_secret"):
     GITHUB_CLIENT_SECRET = CONFIG["github_client_secret"]
 else:
     raise Exception("Github client secret is not configured")
+
+env_yaj_secret_key = os.environ.get("YAJ_SECRET_KEY")
+if env_yaj_secret_key:
+    YAJ_SECRET_KEY = env_yaj_secret_key
+elif CONFIG.get("yaj_secret_key"):
+    YAJ_SECRET_KEY = CONFIG.get("yaj_secret_key")
+else:
+    raise Exception("Please set the YAJ_SECRET_KEY environment variable, or provide it in config file.")
