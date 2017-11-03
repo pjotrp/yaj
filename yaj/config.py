@@ -24,3 +24,19 @@ if YAJ_WEB_ASSETS_DIR == None or not os.path.isdir(YAJ_WEB_ASSETS_DIR):
 
 if not os.path.isdir(YAJ_CSS_DIR):
     raise "No path found for YAJ_CSS_DIR"+YAJ_CSS_DIR
+
+env_github_client_id = os.environ.get("GITHUB_CLIENT_ID")
+if env_github_client_id:
+    GITHUB_CLIENT_ID = env_github_client_id
+elif CONFIG.get("github_client_id"):
+    GITHUB_CLIENT_ID = CONFIG["github_client_id"]
+else:
+    raise Exception("Github client ID is not configured")
+
+env_github_client_secret = os.environ.get("GITHUB_CLIENT_SECRET")
+if env_github_client_secret:
+    GITHUB_CLIENT_SECRET = env_github_client_secret
+elif CONFIG.get("github_client_secret"):
+    GITHUB_CLIENT_SECRET = CONFIG["github_client_secret"]
+else:
+    raise Exception("Github client secret is not configured")
