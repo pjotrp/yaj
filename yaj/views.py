@@ -1,4 +1,4 @@
-from flask import send_from_directory, request, make_response, redirect, url_for
+from flask import send_from_directory, request, make_response, redirect, url_for, session
 import sys
 import traceback
 import datetime
@@ -6,11 +6,22 @@ import logging
 
 from yaj import app
 from yaj.config import YAJ_WEB_ASSETS_DIR, YAJ_DIR, YAJ_SECRET_KEY
-from flask import session
 
 from elasticsearch import Elasticsearch, TransportError
 
+from flask_login import LoginManager, login_user, logout_user
+
+from yaj.users import UserManager, User
+
 logger = logging.getLogger('publish')
+
+# ---- LoginManager ----
+manager = LoginManager();
+manager.init_app(app)
+
+@manager.user_loader
+def load_user(user_id):
+    return UserManager.get(user_id, session.get("login-type"))
 
 # ---- MAKO templating
 
@@ -147,14 +158,13 @@ def issues():
 @app.route("/issue/<path:issue>")
 def issue(issue):
     import flask
+    import flask_login
     comments = list(map(convertMarkdownToHTML, get_issue_comments(issue)))
-    user = session.get("user")
     return serve_template(
         "issue.mako"
         , menu = {"Issues": "active"}
         , issue_id = issue
         , comments = comments
-        , user = user
         , return_to = request.base_url)
 
 @app.route("/add_comment/<path:issue>", methods=["POST"])
@@ -186,6 +196,12 @@ def login():
         , return_to = return_to
         , base_url = request.url_root)
 
+@app.route("/logout")
+def logout():
+    session["login-type"] = None
+    logout_user()
+    return redirect("/")
+
 @app.route("/github_auth", methods=["POST", "GET"])
 def github_auth():
     from yaj.config import GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
@@ -201,21 +217,6 @@ def github_auth():
     }
     result = requests.post("https://github.com/login/oauth/access_token", json=data)
     result_dict = {arr[0]:arr[1] for arr in [tok.split("=") for tok in [token for token in result.text.split("&")]]}
-    return redirect(
-        url_for("login_github_user", access_token=result_dict["access_token"])
-        + "?return_to=" + return_to)
-
-@app.route("/login_github_user/<access_token>", methods = ["GET"])
-def login_github_user(access_token):
-    import requests, flask
-    url = "https://api.github.com/user"
-    parameters = { "access_token": access_token}
-    result = requests.get(url, params=parameters)
-    result_json = result.json()
-    session["user"] = {
-        "login-type": "github-oauth"
-        , "user-data": result_json
-        , "access_token": access_token
-    }
-    return_to = request.args.get("return_to")
+    session["login-type"] = "github-oauth"
+    login_user(UserManager.get(str(result_dict["access_token"]), "github-oauth"))
     return redirect(return_to)
