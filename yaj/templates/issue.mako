@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 
 <%!
-   from yaj.publish import story, story_metadata
+  from yaj.publish import story, story_metadata
+  from flask_login import current_user
 %>
 
 <%inherit file="base.mako" />
@@ -39,10 +40,10 @@
         <hr>
 
         <!-- Comments Form -->
-	% if user:
+	% if current_user.is_authenticated:
 	<form method="POST" action="/add_comment/${issue_id}">
         <div class="card my-4">
-          <h5 class="card-header">Leave a Comment:</h5>
+          <h5 class="card-header">Leave a Comment (as ${current_user.name}):</h5>
           <div class="card-body">
             <form>
               <div class="form-group">
