@@ -187,12 +187,13 @@ def add_comment(issue):
 
 @app.route("/login", methods = ["GET"])
 def login():
-    from yaj.config import GITHUB_CLIENT_ID
+    from yaj.config import GITHUB_CLIENT_ID, GITHUB_AUTH_URL, ORCID_CLIENT_ID, ORCID_AUTH_URL
     return_to = request.args.get("return_to")
     return serve_template(
         "login.mako"
         , menu = {"Login": "active"}
-        , client_id = GITHUB_CLIENT_ID
+        , client_id = {"github": GITHUB_CLIENT_ID, "orcid": ORCID_CLIENT_ID}
+        , auth_url = {"github": GITHUB_AUTH_URL, "orcid": ORCID_AUTH_URL}
         , return_to = return_to
         , base_url = request.url_root)
 
