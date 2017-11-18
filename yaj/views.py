@@ -210,7 +210,7 @@ def github_auth():
     from yaj.config import GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
     import requests;
     code = request.args.get("code")
-    return_to = request.args.get("return_to") or session["return-to"]
+    return_to = request.args.get("return_to") or session["return-to"] or "/"
     session.pop("return-to", None)
     data = {
         "client_id": GITHUB_CLIENT_ID
@@ -231,17 +231,28 @@ def orcid_auth():
     import json
     import requests;
     code = request.args.get("code")
-    return_to = request.args.get("return_to") or session["return-to"]
-    session.pop("return-to", None)
-    data = {
-        "client_id": ORCID_CLIENT_ID
-        , "client_secret": ORCID_CLIENT_SECRET
-        , "grant_type": "authorization_code"
-        , "code": code
-    }
-    result = requests.post(ORCID_TOKEN_URL, data=data)
-    result_dict = json.loads(result.text)
-    session["login-type"] = "orcid-oauth"
-    session["orcid-details"] = result_dict
-    login_user(UserManager.get(str(result_dict["access_token"]), "orcid-oauth"))
+    error = request.args.get("error")
+    if code:
+        return_to = request.args.get("return_to") or session["return-to"] or "/"
+        session.pop("return-to", None)
+        data = {
+            "client_id": ORCID_CLIENT_ID
+            , "client_secret": ORCID_CLIENT_SECRET
+            , "grant_type": "authorization_code"
+            , "code": code
+        }
+        result = requests.post(ORCID_TOKEN_URL, data=data)
+        result_dict = json.loads(result.text)
+        session["login-type"] = "orcid-oauth"
+        session["orcid-details"] = result_dict
+        login_user(UserManager.get(str(result_dict["access_token"]), "orcid-oauth"))
+    elif error:
+        return_to = url_for("oauth_access_denied", service="ORCID")
     return redirect(return_to)
+
+@app.route("/oauth_access_denied/<path:service>")
+def oauth_access_denied(service):
+    return serve_template(
+        "access_denied.mako"
+        , menu = {"Login": "active"}
+        , service = service)
