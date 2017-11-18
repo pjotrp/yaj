@@ -69,6 +69,14 @@ elif CONFIG.get("orcid_client_id"):
 else:
     raise Exception("ORCID client ID is not configured")
 
+env_orcid_client_secret = os.environ.get("ORCID_CLIENT_SECRET")
+if env_orcid_client_secret:
+    ORCID_CLIENT_SECRET = env_orcid_client_secret
+elif CONFIG.get("orcid_client_secret"):
+    ORCID_CLIENT_SECRET = CONFIG["orcid_client_secret"]
+else:
+    raise Exception("ORCID client secret is not configured")
+
 env_orcid_auth_url = os.environ.get("ORCID_AUTH_URL")
 if env_orcid_auth_url:
     ORCID_AUTH_URL = env_orcid_auth_url
@@ -76,4 +84,12 @@ elif CONFIG.get("orcid_auth_url"):
     ORCID_AUTH_URL = CONFIG["orcid_auth_url"]
 else:
     raise Exception("ORCID authorisation URL is not configured")
+
+env_orcid_token_url = os.environ.get("ORCID_TOKEN_URL")
+if env_orcid_token_url:
+    ORCID_TOKEN_URL = env_orcid_token_url
+elif CONFIG.get("orcid_token_url"):
+    ORCID_TOKEN_URL = CONFIG["orcid_token_url"]
+else:
+    raise Exception("ORCID token URL is not configured")
 # ---- END: ORCID Configuration ----
