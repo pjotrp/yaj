@@ -32,6 +32,11 @@ class UserManager():
             user = User(user_id = uid)
             user.name = user_details["name"]
             user.github_id = user_details["id"]
+        elif login_type == "orcid-oauth":
+            user_details = session["orcid-details"]
+            user = User(user_id = uid)
+            user.name = user_details["name"]
+            user.orcid = user_details["orcid"]
         return user
 
     def login_github_user(access_token):

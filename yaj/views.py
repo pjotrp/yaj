@@ -189,6 +189,7 @@ def add_comment(issue):
 def login():
     from yaj.config import GITHUB_CLIENT_ID, GITHUB_AUTH_URL, ORCID_CLIENT_ID, ORCID_AUTH_URL
     return_to = request.args.get("return_to")
+    session["return-to"] = return_to
     return serve_template(
         "login.mako"
         , menu = {"Login": "active"}
@@ -199,7 +200,8 @@ def login():
 
 @app.route("/logout")
 def logout():
-    session["login-type"] = None
+    session.pop("login-type", None)
+    session.pop("orcid-details", None)
     logout_user()
     return redirect("/")
 
@@ -208,7 +210,8 @@ def github_auth():
     from yaj.config import GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
     import requests;
     code = request.args.get("code")
-    return_to = request.args.get("return_to")
+    return_to = request.args.get("return_to") or session["return-to"]
+    session.pop("return-to", None)
     data = {
         "client_id": GITHUB_CLIENT_ID
         , "client_secret": GITHUB_CLIENT_SECRET
@@ -220,4 +223,25 @@ def github_auth():
     result_dict = {arr[0]:arr[1] for arr in [tok.split("=") for tok in [token for token in result.text.split("&")]]}
     session["login-type"] = "github-oauth"
     login_user(UserManager.get(str(result_dict["access_token"]), "github-oauth"))
+    return redirect(return_to)
+
+@app.route("/orcid_auth", methods=["POST", "GET"])
+def orcid_auth():
+    from yaj.config import ORCID_CLIENT_ID, ORCID_CLIENT_SECRET, ORCID_TOKEN_URL
+    import json
+    import requests;
+    code = request.args.get("code")
+    return_to = request.args.get("return_to") or session["return-to"]
+    session.pop("return-to", None)
+    data = {
+        "client_id": ORCID_CLIENT_ID
+        , "client_secret": ORCID_CLIENT_SECRET
+        , "grant_type": "authorization_code"
+        , "code": code
+    }
+    result = requests.post(ORCID_TOKEN_URL, data=data)
+    result_dict = json.loads(result.text)
+    session["login-type"] = "orcid-oauth"
+    session["orcid-details"] = result_dict
+    login_user(UserManager.get(str(result_dict["access_token"]), "orcid-oauth"))
     return redirect(return_to)
