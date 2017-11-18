@@ -59,7 +59,7 @@
 	    </li>
 	    % else:
             <li class="nav-item ${menu.get('Login')}">
-              <a class="nav-link" href="/login.html">Login</a>
+              <a class="nav-link" href="/login">Login</a>
             </li>
 	    % endif
 	    
