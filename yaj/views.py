@@ -256,3 +256,49 @@ def oauth_access_denied(service):
         "access_denied.mako"
         , menu = {"Login": "active"}
         , service = service)
+
+@app.route("/register", methods=["POST", "GET"])
+def register():
+    if request.method == "GET":
+        errors = {key:request.args.get(key) for key in request.args}
+        return serve_template(
+            "register.mako"
+            , menu={"Register": "active"}
+            , errors = errors)
+    elif request.method == "POST":
+        input_state = validate_registration_details(request.form)
+        if input_state["status"] == "ok":
+            return register_user()
+        else:
+            errors = input_state["error_messages"]
+            params = "&".join(["%s=%s" % (key, errors[key]) for key in errors])
+            return redirect(url_for("register") + "?" + params)
+    else:
+        raise Exception("We really should never get here...")
+
+def validate_registration_details(form):
+    status_dict = {
+        "status": "ok"
+        , "error_messages": {}
+    }
+
+    if form["user-name"] == None or form["user-name"] == "":
+        status_dict["status"] = "error"
+        status_dict["error_messages"]["user-name"] = "The user's name MUST be provided"
+
+    if form["user-email"] == None or form["user-email"] == "":
+        status_dict["status"] = "error"
+        status_dict["error_messages"]["user-email"] = "The user's email address MUST be provided"
+
+    if form["password"] == None or form["password"] == "":
+        status_dict["status"] = "error"
+        status_dict["error_messages"]["password"] = "The password MUST be provided"
+
+    if form["password"] != form["confirm-password"]:
+        status_dict["status"] = "error"
+        status_dict["error_messages"]["confirm-password"] = "The passwords MUST match"
+
+    return status_dict
+
+def register_user():
+    raise Exception("Not Implemented!")
