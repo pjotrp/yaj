@@ -37,6 +37,10 @@ class UserManager():
             user = User(user_id = uid)
             user.name = user_details["name"]
             user.orcid = user_details["orcid"]
+        elif login_type == "local-auth":
+            user_details = session["local-user-details"]
+            user = User(user_id = uid)
+            user.name = user_details["name"]
         return user
 
     def login_github_user(access_token):

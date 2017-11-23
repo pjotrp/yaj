@@ -207,6 +207,7 @@ def login():
 def logout():
     session.pop("login-type", None)
     session.pop("orcid-details", None)
+    session.pop("local-user-details", None)
     logout_user()
     return redirect("/")
 
@@ -215,8 +216,7 @@ def github_auth():
     from yaj.config import GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
     import requests;
     code = request.args.get("code")
-    return_to = request.args.get("return_to") or session["return-to"] or "/"
-    session.pop("return-to", None)
+    return_to = request.args.get("return_to") or session.pop("return-to", None) or "/"
     data = {
         "client_id": GITHUB_CLIENT_ID
         , "client_secret": GITHUB_CLIENT_SECRET
@@ -238,7 +238,7 @@ def orcid_auth():
     code = request.args.get("code")
     error = request.args.get("error")
     if code:
-        return_to = request.args.get("return_to") or session["return-to"] or "/"
+        return_to = request.args.get("return_to") or session.pop("return-to", None) or "/"
         session.pop("return-to", None)
         data = {
             "client_id": ORCID_CLIENT_ID
@@ -288,28 +288,40 @@ def register():
     else:
         raise Exception("We really should never get here...")
 
+def validate_user_name(form, status):
+    if form["user-name"] == None or form["user-name"] == "":
+        status["status"] = "error"
+        status["error_messages"]["user-name"] = "The user's name MUST be provided"
+    return status
+
+def validate_user_email(form, status):
+    if form["user-email"] == None or form["user-email"] == "":
+        status["status"] = "error"
+        status["error_messages"]["user-email"] = "The user's email address MUST be provided"
+    return status
+
+def validate_user_password(form, status):
+    if form["password"] == None or form["password"] == "":
+        status["status"] = "error"
+        status["error_messages"]["password"] = "The password MUST be provided"
+    return status
+
+def confirm_user_passwork(form, status):
+    if form["password"] != form["confirm-password"]:
+        status["status"] = "error"
+        status["error_messages"]["confirm-password"] = "The passwords MUST match"
+    return status
+    
+
 def validate_registration_details(form):
     status_dict = {
         "status": "ok"
         , "error_messages": {}
     }
-
-    if form["user-name"] == None or form["user-name"] == "":
-        status_dict["status"] = "error"
-        status_dict["error_messages"]["user-name"] = "The user's name MUST be provided"
-
-    if form["user-email"] == None or form["user-email"] == "":
-        status_dict["status"] = "error"
-        status_dict["error_messages"]["user-email"] = "The user's email address MUST be provided"
-
-    if form["password"] == None or form["password"] == "":
-        status_dict["status"] = "error"
-        status_dict["error_messages"]["password"] = "The password MUST be provided"
-
-    if form["password"] != form["confirm-password"]:
-        status_dict["status"] = "error"
-        status_dict["error_messages"]["confirm-password"] = "The passwords MUST match"
-
+    status_dict = validate_user_name(form, status_dict)
+    status_dict = validate_user_email(form, status_dict)
+    status_dict = validate_user_password(form, status_dict)
+    status_dict = confirm_user_password(form, status_dict)
     return status_dict
 
 def register_user(form):
@@ -347,7 +359,7 @@ def user_exists(email):
             })
         user = response["hits"]["hits"]
     except TransportError as te:
-        print("TransportError: ", te)
+        pass
     return user
 
 def save_user(user, user_id):
@@ -357,3 +369,57 @@ def save_user(user, user_id):
     }])
     es.create(index="users", doc_type="local", body=user, id=user_id)
     return redirect(url_for("login"))
+
+@app.route("/login_local", methods=["POST"])
+def login_local():
+    if request.method == "POST":
+        login_status = validate_login_details(request.form)
+        if login_status["status"] == "ok":
+            return_to = request.args.get("return_to") or session.pop("return-to", None) or "/"
+            user = get_user_from_local(
+                request.form["user-email"]
+                , request.form["password"])
+            if user == None:
+                return redirect(url_for("login"))
+            else:
+                session["local-user-details"] = user
+                session["login-type"] = "local-auth"
+                login_user(UserManager.get(
+                    uid = str(user["user_id"])
+                    , login_type = "local-auth"))
+                return redirect(return_to)
+        else:
+            return redirect(return_to)
+    else:
+        raise Exception("Login: Should never get here!")
+
+def validate_login_details(form):
+    status_dict = {
+        "status": "ok"
+        , "error_messages": {}
+    }
+    status_dict = validate_user_email(form, status_dict)
+    status_dict = validate_user_password(form, status_dict)
+    return status_dict
+
+def get_user_from_local(email, password):
+    import bcrypt
+    es = Elasticsearch([{
+        "host": ELASTICSEARCH_HOST
+        , "port": ELASTICSEARCH_PORT
+    }])
+    try:
+        response = es.search(
+            index = "users"
+            , doc_type = "local"
+            , body = {
+                "query": { "match": { "email": email } }
+            })
+        user_details = response["hits"]["hits"][0]["_source"]
+        if bcrypt.checkpw(
+                password.encode("utf-8")
+                , user_details["password"].encode("utf-8")):
+            return user_details
+    except TransportError as te:
+        pass
+    return None
