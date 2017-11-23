@@ -276,7 +276,7 @@ def register():
     elif request.method == "POST":
         input_state = validate_registration_details(request.form)
         if input_state["status"] == "ok":
-            return register_user()
+            return register_user(request.form)
         else:
             session["entered_data"] = {
                 "user-name": request.form["user-name"]
@@ -312,5 +312,48 @@ def validate_registration_details(form):
 
     return status_dict
 
-def register_user():
-    raise Exception("Not Implemented!")
+def register_user(form):
+    if user_exists(form["user-email"]):
+        return redirect(url_for("register") + "?email=User already exists")
+    else:
+        from uuid import uuid4
+        import bcrypt
+        import json
+        uid = str(uuid4())
+        salt = bcrypt.gensalt()
+        user = json.dumps({
+            "user_id": uid
+            , "name": form["user-name"]
+            , "email": form["user-email"]
+            , "password": bcrypt.hashpw(
+                form["password"].encode("utf-8")
+                , salt).decode("utf-8")
+            , "salt": salt.decode("utf-8")
+        })
+        return save_user(user, uid)
+
+def user_exists(email):
+    es = Elasticsearch([{
+        "host": ELASTICSEARCH_HOST
+        , "port": ELASTICSEARCH_PORT
+    }])
+    user = None
+    try:
+        response = es.search(
+            index = "users",
+            doc_type = "local",
+            body = {
+                "query": { "match": { "email": email } }
+            })
+        user = response["hits"]["hits"]
+    except TransportError as te:
+        print("TransportError: ", te)
+    return user
+
+def save_user(user, user_id):
+    es = Elasticsearch([{
+        "host": ELASTICSEARCH_HOST
+        , "port": ELASTICSEARCH_PORT
+    }])
+    es.create(index="users", doc_type="local", body=user, id=user_id)
+    return redirect(url_for("login"))
