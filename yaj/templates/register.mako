@@ -33,7 +33,10 @@
 	    class="form-control"
 	    placeholder="Enter your name"
 	    title="Enter your name"
-	    required="required" />
+	    required="required"
+	    % if entered_data:
+	    value="${entered_data.get('user-name') | h}"
+	    % endif />
 	</fieldset>
 
 	<fieldset class="form-group">
@@ -45,7 +48,10 @@
 	    class="form-control"
 	    placeholder="Enter your email address"
 	    title="Enter your email address"
-	    required="required" />
+	    required="required"
+	    % if entered_data:
+	    value="${entered_data.get('user-email') | h}"
+	    % endif />
 	</fieldset>
       </fieldset>
 

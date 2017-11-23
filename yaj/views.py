@@ -261,15 +261,22 @@ def oauth_access_denied(service):
 def register():
     if request.method == "GET":
         errors = {key:request.args.get(key) for key in request.args}
+        entered_data = session.pop("entered_data", None)
+
         return serve_template(
             "register.mako"
             , menu={"Register": "active"}
-            , errors = errors)
+            , errors = errors
+            , entered_data = entered_data)
     elif request.method == "POST":
         input_state = validate_registration_details(request.form)
         if input_state["status"] == "ok":
             return register_user()
         else:
+            session["entered_data"] = {
+                "user-name": request.form["user-name"]
+                , "user-email": request.form["user-email"]
+            }
             errors = input_state["error_messages"]
             params = "&".join(["%s=%s" % (key, errors[key]) for key in errors])
             return redirect(url_for("register") + "?" + params)
