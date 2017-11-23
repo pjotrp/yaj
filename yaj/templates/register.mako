@@ -7,6 +7,15 @@
 <div class="container">
   <div class="col-lg-8">
     <h5>Register to Use Yet Another Journal</h5>
+
+    % if len(errors) > 0:
+    <div class="alert alert-danger">
+      % for error in errors:
+      ${errors[error] | h} <br />
+      % endfor
+    </div>
+    % endif
+
     <form
       method="POST"
       action="/register"
