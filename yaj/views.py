@@ -50,7 +50,7 @@ def handle_bad_request(e):
     time_str = now.strftime('%l:%M%p UTC %b %d, %Y')
     formatted_lines = [request.url + " ("+time_str+")"]+traceback.format_exc().splitlines()
     # resp = make_response(render_template("error.html",message=err_msg,stack=formatted_lines,error_image=animation,version=GN_VERSION))
-    return serve_template("error.mako",message=err_msg,stack=formatted_lines)
+    return serve_template("error.mako",message=err_msg,stack=formatted_lines,menu={"Error":"active"})
 
 # ---- Issues from filesystem
 def get_issues():
