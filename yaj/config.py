@@ -93,3 +93,22 @@ elif CONFIG.get("orcid_token_url"):
 else:
     raise Exception("ORCID token URL is not configured")
 # ---- END: ORCID Configuration ----
+
+
+# ---- Elasticsearch Configuration ----
+env_elasticsearch_host = os.environ.get("ELASTICSEARCH_HOST")
+if env_elasticsearch_host:
+    ELASTICSEARCH_HOST = env_elasticsearch_host
+elif CONFIG.get("elasticsearch_host"):
+    ELASTICSEARCH_HOST = CONFIG["elasticsearch_host"]
+else:
+    raise Exception("ELASTICSEARCH_HOST is not configured")
+
+env_elasticsearch_port = os.environ.get("ELASTICSEARCH_PORT")
+if env_elasticsearch_port:
+    ELASTICSEARCH_PORT = env_elasticsearch_port
+elif CONFIG.get("elasticsearch_port"):
+    ELASTICSEARCH_PORT = CONFIG["elasticsearch_port"]
+else:
+    raise Exception("ELASTICSEARCH_PORT is not configured")
+# ---- END: Elasticsearch Configuration ----
