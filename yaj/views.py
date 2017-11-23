@@ -5,7 +5,7 @@ import datetime
 import logging
 
 from yaj import app
-from yaj.config import YAJ_WEB_ASSETS_DIR, YAJ_DIR, YAJ_SECRET_KEY
+from yaj.config import YAJ_WEB_ASSETS_DIR, YAJ_DIR, YAJ_SECRET_KEY, ELASTICSEARCH_HOST, ELASTICSEARCH_PORT
 
 from elasticsearch import Elasticsearch, TransportError
 
@@ -67,7 +67,9 @@ def get_issues_tags_and_urls(filename):
 
 # ---- Comments from and to Elasticsearch
 def get_issue_comments(issue):
-    es = Elasticsearch([{"host": "localhost", "port": 9200}])
+    es = Elasticsearch([{
+        "host": ELASTICSEARCH_HOST
+        , "port": ELASTICSEARCH_PORT}])
     comments = []
     try:
         response = es.search(
@@ -107,7 +109,10 @@ def get_author():
     }
 
 def save_comment(index, doc_type, comment, comment_id):
-    es = Elasticsearch([{"host": "localhost", "port": 9200}])
+    es = Elasticsearch([{
+        "host": ELASTICSEARCH_HOST,
+        "port": ELASTICSEARCH_PORT
+    }])
     es.create(index=index, doc_type=doc_type, body=comment, id=comment_id);
 
 def convertMarkdownToHTML(comment):
