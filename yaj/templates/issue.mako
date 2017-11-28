@@ -43,7 +43,7 @@
 	% if current_user.is_authenticated:
 	<form method="POST" action="/add_comment/${issue_id}">
         <div class="card my-4">
-          <h5 class="card-header">Leave a Comment (as ${current_user.name}):</h5>
+          <h5 class="card-header">Leave a Comment (as ${current_user.data["name"]}):</h5>
           <div class="card-body">
             <form>
               <div class="form-group">

@@ -25,28 +25,13 @@ class User():
         return self.anonymous
 
 class UserManager():
-    def get(uid, login_type = None):
+    def get(uid):
+        from yaj.views import get_user_by_unique_column
         user = None
-        if login_type == "github-oauth":
-            user_details = UserManager.login_github_user(uid)
+        user_details = get_user_by_unique_column("user_id", uid)
+        if user_details != None:
             user = User(user_id = uid)
-            user.name = user_details["name"]
-            user.github_id = user_details["id"]
-        elif login_type == "orcid-oauth":
-            user_details = session["orcid-details"]
-            user = User(user_id = uid)
-            user.name = user_details["name"]
-            user.orcid = user_details["orcid"]
-        elif login_type == "local-auth":
-            user_details = session["local-user-details"]
-            user = User(user_id = uid)
-            user.name = user_details["name"]
+            user.data = {}
+            for key in user_details:
+                user.data[key] = user_details[key]
         return user
-
-    def login_github_user(access_token):
-        import requests, flask
-        url = "https://api.github.com/user"
-        parameters = { "access_token": access_token}
-        result = requests.get(url, params=parameters)
-        result_json = result.json()
-        return result_json

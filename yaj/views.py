@@ -221,14 +221,35 @@ def github_auth():
         "client_id": GITHUB_CLIENT_ID
         , "client_secret": GITHUB_CLIENT_SECRET
         , "code": code
-        # , "redirect_uri": "The URL in your application where users are sent after authorization"
-        # , "state": "The unguessable random string you provided in Step 1"
     }
     result = requests.post("https://github.com/login/oauth/access_token", json=data)
     result_dict = {arr[0]:arr[1] for arr in [tok.split("=") for tok in [token for token in result.text.split("&")]]}
-    session["login-type"] = "github-oauth"
-    login_user(UserManager.get(str(result_dict["access_token"]), "github-oauth"))
+    
+    github_user = get_github_user_details(result_dict["access_token"])
+    user_details = get_user_by_unique_column(
+        "github_id"
+        , github_user["id"])
+    if user_details == None:
+        # Create new user
+        from uuid import uuid4
+        user_details = {
+            "user_id": str(uuid4())
+            , "name": github_user["name"]
+            , "github_id": github_user["id"]
+            , "github_url": github_user["html_url"]
+        }
+        save_user(user_details, user_details["user_id"])
+    session["user_id"] = user_details["user_id"]
+    login_user(UserManager.get(str(user_details["user_id"])))
     return redirect(return_to)
+
+def get_github_user_details(access_token):
+        import requests, flask
+        url = "https://api.github.com/user"
+        parameters = { "access_token": access_token}
+        result = requests.get(url, params=parameters)
+        result_json = result.json()
+        return result_json
 
 @app.route("/orcid_auth", methods=["POST", "GET"])
 def orcid_auth():
@@ -248,9 +269,23 @@ def orcid_auth():
         }
         result = requests.post(ORCID_TOKEN_URL, data=data)
         result_dict = json.loads(result.text)
-        session["login-type"] = "orcid-oauth"
-        session["orcid-details"] = result_dict
-        login_user(UserManager.get(str(result_dict["access_token"]), "orcid-oauth"))
+        user_details = get_user_by_unique_column(
+            "orcid"
+            , result_dict["orcid"])
+        if user_details == None:
+            from uuid import uuid4
+            from yaj.config import ORCID_AUTH_URL
+            user_details = {
+                "user_id": str(uuid4())
+                , "name": result_dict["name"]
+                , "orcid": result_dict["orcid"]
+                , "orcid_url": "%s/%s" % (
+                    "/".join(ORCID_AUTH_URL.split("/")[:-2]),
+                    result_dict["orcid"])
+            }
+            save_user(user_details, user_details["user_id"])
+        session["user_id"] = user_details["user_id"]
+        login_user(UserManager.get(str(user_details["user_id"])))
     elif error:
         return_to = url_for("oauth_access_denied", service="ORCID")
     return redirect(return_to)
@@ -362,12 +397,12 @@ def user_exists(email):
         pass
     return user
 
-def save_user(user, user_id):
+def save_user(user, user_id, index="users", doc_type="local"):
     es = Elasticsearch([{
         "host": ELASTICSEARCH_HOST
         , "port": ELASTICSEARCH_PORT
     }])
-    es.create(index="users", doc_type="local", body=user, id=user_id)
+    es.create(index, doc_type, body=user, id=user_id)
     return redirect(url_for("login"))
 
 @app.route("/login_local", methods=["POST"])
@@ -376,7 +411,7 @@ def login_local():
         login_status = validate_login_details(request.form)
         if login_status["status"] == "ok":
             return_to = request.args.get("return_to") or session.pop("return-to", None) or "/"
-            user = get_user_from_local(
+            user = get_user_by_email_and_password(
                 request.form["user-email"]
                 , request.form["password"])
             if user == None:
@@ -402,7 +437,7 @@ def validate_login_details(form):
     status_dict = validate_user_password(form, status_dict)
     return status_dict
 
-def get_user_from_local(email, password):
+def get_user_by_email_and_password(email, password):
     import bcrypt
     es = Elasticsearch([{
         "host": ELASTICSEARCH_HOST
@@ -423,3 +458,22 @@ def get_user_from_local(email, password):
     except TransportError as te:
         pass
     return None
+
+def get_user_by_unique_column(column_name, column_value):
+    es = Elasticsearch([{
+        "host": ELASTICSEARCH_HOST
+        , "port": ELASTICSEARCH_PORT
+    }])
+    user_details = None
+    try:
+        response = es.search(
+            index = "users"
+            , doc_type = "local"
+            , body = {
+                "query": { "match": { column_name: column_value } }
+            })
+        if len(response["hits"]["hits"]) > 0:
+            user_details = response["hits"]["hits"][0]["_source"]
+    except TransportError as te:
+        pass
+    return user_details
