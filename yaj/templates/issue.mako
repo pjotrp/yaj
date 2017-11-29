@@ -71,7 +71,14 @@
           <div class="media-body">
             <h5 class="mt-0">${comment["author"]["name"]}</h5>
             <p>
-	      <small>Posted: ${comment["posted_on"]}</small><br />
+	      <small>
+		Posted: ${comment["posted_on"]}
+		%if comment["author"].get("user_url"):
+		By: <a href="${comment['author']['user_url'] | h}" title="User's url">
+		  User page on ${comment["author"].get("login_type") | h}
+		</a>
+		%endif
+	      </small><br />
 	      ${comment["comment_text"]}
 	    </p>
           </div>
