@@ -67,7 +67,11 @@
 	  title="Click to clear all fields and reset the form">Reset</button>
       </fieldset>
 
-    </form>
+      </form>
+      <p>
+	Don't have an account with Github or ORCID?
+	<a href="/register" title="link to registration page">Register here</a>
+      </p>
     </div>
   </div>
 
