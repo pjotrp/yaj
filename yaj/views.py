@@ -21,7 +21,7 @@ manager.init_app(app)
 
 @manager.user_loader
 def load_user(user_id):
-    return UserManager.get(user_id, session.get("login-type"))
+    return UserManager.get(user_id)
 
 # ---- MAKO templating
 
@@ -93,20 +93,8 @@ def convertCommentDate(comment):
     return new_comment
 
 def get_author():
-    return {
-        "@type": "Person",
-        "@context": "http://json-ld.org/contexts/person.jsonld",
-        "@id": "http://example.com/",
-        "name": "Not Set",
-        "jobTitle": "A Job Title",
-        "nationality": "East Timor",
-        "url": "http://domain.tld/",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Guatemala",
-            "email": "roxannemiles@plasto.com"
-        }
-    }
+    from yaj.users import UserManager
+    return UserManager.get(session["user_id"]).data
 
 def save_comment(index, doc_type, comment, comment_id):
     es = Elasticsearch([{
@@ -236,11 +224,12 @@ def github_auth():
             "user_id": str(uuid4())
             , "name": github_user["name"]
             , "github_id": github_user["id"]
-            , "github_url": github_user["html_url"]
+            , "user_url": github_user["html_url"]
+            , "login_type": "github"
         }
         save_user(user_details, user_details["user_id"])
     session["user_id"] = user_details["user_id"]
-    login_user(UserManager.get(str(user_details["user_id"])))
+    login_user(UserManager.get(user_details["user_id"]))
     return redirect(return_to)
 
 def get_github_user_details(access_token):
@@ -279,13 +268,14 @@ def orcid_auth():
                 "user_id": str(uuid4())
                 , "name": result_dict["name"]
                 , "orcid": result_dict["orcid"]
-                , "orcid_url": "%s/%s" % (
+                , "user_url": "%s/%s" % (
                     "/".join(ORCID_AUTH_URL.split("/")[:-2]),
                     result_dict["orcid"])
+                , "login_type": "orcid"
             }
             save_user(user_details, user_details["user_id"])
         session["user_id"] = user_details["user_id"]
-        login_user(UserManager.get(str(user_details["user_id"])))
+        login_user(UserManager.get(user_details["user_id"]))
     elif error:
         return_to = url_for("oauth_access_denied", service="ORCID")
     return redirect(return_to)
@@ -341,7 +331,7 @@ def validate_user_password(form, status):
         status["error_messages"]["password"] = "The password MUST be provided"
     return status
 
-def confirm_user_passwork(form, status):
+def confirm_user_password(form, status):
     if form["password"] != form["confirm-password"]:
         status["status"] = "error"
         status["error_messages"]["confirm-password"] = "The passwords MUST match"
@@ -376,6 +366,8 @@ def register_user(form):
                 form["password"].encode("utf-8")
                 , salt).decode("utf-8")
             , "salt": salt.decode("utf-8")
+            , "user_url": None
+            , "login_type": "local"
         })
         return save_user(user, uid)
 
@@ -417,11 +409,8 @@ def login_local():
             if user == None:
                 return redirect(url_for("login"))
             else:
-                session["local-user-details"] = user
-                session["login-type"] = "local-auth"
-                login_user(UserManager.get(
-                    uid = str(user["user_id"])
-                    , login_type = "local-auth"))
+                session["user_id"] = str(user["user_id"])
+                login_user(UserManager.get(str(user["user_id"])))
                 return redirect(return_to)
         else:
             return redirect(return_to)
