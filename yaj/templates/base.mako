@@ -2,6 +2,7 @@
 
 <%!
   from flask import url_for
+  from flask_login import current_user
 %>
 
 <!DOCTYPE html>
@@ -52,9 +53,16 @@
             <li class="nav-item ${menu.get('Contact')}">
               <a class="nav-link" href="/contact.html">Contact</a>
             </li>
+	    % if current_user.is_authenticated:
+	    <li class="nav-item">
+	      <a class="nav-link" href="/logout">Logout</a>
+	    </li>
+	    % else:
             <li class="nav-item ${menu.get('Login')}">
-              <a class="nav-link" href="/login.html">Login</a>
+              <a class="nav-link" href="/login">Login</a>
             </li>
+	    % endif
+	    
           </ul>
         </div>
       </div>
